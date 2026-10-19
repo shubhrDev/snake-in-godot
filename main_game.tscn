@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://bce1qlk56q8w5"]
+
+[ext_resource type="Texture2D" uid="uid://bsk1uj1mofkhd" path="res://Sprites/Tiles.png" id="1_1oj5k"]
+[ext_resource type="Script" uid="uid://jb0towhy5wtj" path="res://BackgroundManager.gd" id="2_yx7mw"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yx7mw"]
+texture = ExtResource("1_1oj5k")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_e3c3e"]
+sources/0 = SubResource("TileSetAtlasSource_yx7mw")
+
+[node name="Main Game" type="Node2D" unique_id=1832565408]
+
+[node name="BackGround Layer" type="TileMapLayer" parent="." unique_id=810248870]
+tile_set = SubResource("TileSet_e3c3e")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1697826731]
+anchor_mode = 0
+
+[node name="BackGround Manager" type="Node" parent="." unique_id=366879688 node_paths=PackedStringArray("back_ground_tilemap_layer")]
+script = ExtResource("2_yx7mw")
+back_ground_tilemap_layer = NodePath("../BackGround Layer")
