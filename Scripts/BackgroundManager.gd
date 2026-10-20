@@ -18,3 +18,7 @@ func set_play_area():
 				back_ground_tilemap_layer.set_cell(Vector2i(x, y), 0, dark_green_atlas)
 			else:
 				back_ground_tilemap_layer.set_cell(Vector2i(x, y), 0, light_green_atlas)
+
+
+
+	

@@ -1,7 +1,9 @@
 [gd_scene format=3 uid="uid://bce1qlk56q8w5"]
 
 [ext_resource type="Texture2D" uid="uid://bsk1uj1mofkhd" path="res://Sprites/Tiles.png" id="1_1oj5k"]
-[ext_resource type="Script" uid="uid://jb0towhy5wtj" path="res://BackgroundManager.gd" id="2_yx7mw"]
+[ext_resource type="Script" uid="uid://jb0towhy5wtj" path="res://Scripts/BackgroundManager.gd" id="2_yx7mw"]
+[ext_resource type="Script" uid="uid://cbvyclyy6fsw6" path="res://Scripts/snake_manager.gd" id="3_ykeeq"]
+[ext_resource type="Script" uid="uid://b7mmrxjcd7i55" path="res://Scripts/apple_spawn_manager.gd" id="4_6bm6p"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yx7mw"]
 texture = ExtResource("1_1oj5k")
@@ -13,14 +15,55 @@ texture = ExtResource("1_1oj5k")
 [sub_resource type="TileSet" id="TileSet_e3c3e"]
 sources/0 = SubResource("TileSetAtlasSource_yx7mw")
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dugkq"]
+texture = ExtResource("1_1oj5k")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_7jmlj"]
+sources/0 = SubResource("TileSetAtlasSource_dugkq")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ykeeq"]
+texture = ExtResource("1_1oj5k")
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_otgu8"]
+sources/0 = SubResource("TileSetAtlasSource_ykeeq")
+
 [node name="Main Game" type="Node2D" unique_id=1832565408]
 
-[node name="BackGround Layer" type="TileMapLayer" parent="." unique_id=810248870]
+[node name="Background Layer" type="TileMapLayer" parent="." unique_id=810248870]
 tile_set = SubResource("TileSet_e3c3e")
+
+[node name="Apple Draw Layer" type="TileMapLayer" parent="." unique_id=56957766]
+tile_set = SubResource("TileSet_7jmlj")
+
+[node name="Snake Drawing layer" type="TileMapLayer" parent="." unique_id=473996013]
+tile_set = SubResource("TileSet_otgu8")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1697826731]
 anchor_mode = 0
 
-[node name="BackGround Manager" type="Node" parent="." unique_id=366879688 node_paths=PackedStringArray("back_ground_tilemap_layer")]
+[node name="Background Manager" type="Node" parent="." unique_id=366879688 node_paths=PackedStringArray("back_ground_tilemap_layer")]
 script = ExtResource("2_yx7mw")
-back_ground_tilemap_layer = NodePath("../BackGround Layer")
+back_ground_tilemap_layer = NodePath("../Background Layer")
+
+[node name="Snake Manager" type="Node" parent="." unique_id=175522888 node_paths=PackedStringArray("snake_layer", "snake_movement_duration")]
+script = ExtResource("3_ykeeq")
+snake_layer = NodePath("../Snake Drawing layer")
+snake_movement_duration = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="Snake Manager" unique_id=555440760]
+wait_time = 0.12
+autostart = true
+
+[node name="Apple Spawn Manager" type="Node" parent="." unique_id=2105677528 node_paths=PackedStringArray("apple_tilemap_layer")]
+script = ExtResource("4_6bm6p")
+apple_tilemap_layer = NodePath("../Apple Draw Layer")
+
+[connection signal="timeout" from="Snake Manager/Timer" to="Snake Manager" method="_on_timer_timeout"]
