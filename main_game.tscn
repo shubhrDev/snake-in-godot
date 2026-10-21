@@ -53,10 +53,11 @@ anchor_mode = 0
 script = ExtResource("2_yx7mw")
 back_ground_tilemap_layer = NodePath("../Background Layer")
 
-[node name="Snake Manager" type="Node" parent="." unique_id=175522888 node_paths=PackedStringArray("snake_layer", "snake_movement_duration")]
+[node name="Snake Manager" type="Node" parent="." unique_id=175522888 node_paths=PackedStringArray("snake_layer", "snake_movement_duration", "apple_node")]
 script = ExtResource("3_ykeeq")
 snake_layer = NodePath("../Snake Drawing layer")
 snake_movement_duration = NodePath("Timer")
+apple_node = NodePath("../Apple Spawn Manager")
 
 [node name="Timer" type="Timer" parent="Snake Manager" unique_id=555440760]
 wait_time = 0.12

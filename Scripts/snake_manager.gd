@@ -13,10 +13,11 @@ var snake_position_list := []
 var previous_tail_position
 
 var can_turn := true
-
+@export var apple_node : Node
 
 func _ready() -> void:
 	start_game()
+	
 func start_game():
 	snake_position_list.clear()
 	#Set positions up in list
@@ -29,7 +30,6 @@ func start_game():
 	
 func _process(delta: float) -> void:
 	handle_input()
-
 
 func handle_input():
 	if (!can_turn):
@@ -59,7 +59,8 @@ func clear_snake(pos):
 
 func _on_timer_timeout() -> void:
 	move_snake()
-
+	eat_apple()
+	
 func move_snake():
 	var previous_snake_positions := []
 	
@@ -82,3 +83,8 @@ func move_snake():
 
 func grow_snake():
 	snake_position_list.append(previous_tail_position)
+	print (snake_position_list.size())
+func eat_apple():
+	if snake_position_list[0] == apple_node.spawn_pos:
+		print("eat apple")
+		grow_snake()
