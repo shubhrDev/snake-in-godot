@@ -1,8 +1,14 @@
+class_name Snake
+
+
 extends Node
 
 @export var snake_layer : TileMapLayer
 @export var snake_movement_duration : Timer
-
+@export var apple_node : Node
+@onready var score_menu: Control = $'../Score Menu'
+signal apple_eaten
+signal on_killed
 
 var snake_direction := Vector2i.RIGHT
 
@@ -13,7 +19,6 @@ var snake_position_list := []
 var previous_tail_position
 
 var can_turn := true
-@export var apple_node : Node
 
 func _ready() -> void:
 	start_game()
@@ -51,6 +56,7 @@ func handle_input():
 	if Input.is_action_just_pressed("ui_accept"):
 		print("INCEASE SNAKE LENGHTH")
 		grow_snake()
+
 func draw_snake(pos):
 	snake_layer.set_cell(pos, 0, snake_color_atlas)
 
@@ -59,8 +65,24 @@ func clear_snake(pos):
 
 func _on_timer_timeout() -> void:
 	move_snake()
+	kill_snake()
 	eat_apple()
-	
+
+func kill_snake():
+	for i in range (1, snake_position_list.size()):
+		var body = snake_position_list[i]
+		if snake_position_list[0] == body:
+			print("DIE")
+			on_killed.emit()
+			score_menu.show()
+			Engine.time_scale = 0
+		elif (snake_position_list[0].x < 0 or snake_position_list[0].x > 16 
+			or snake_position_list[0].y < 0 or snake_position_list[0].y > 16):
+			print ("DIE")
+			score_menu.show()
+			on_killed.emit()
+			Engine.time_scale = 0
+
 func move_snake():
 	var previous_snake_positions := []
 	
@@ -84,7 +106,9 @@ func move_snake():
 func grow_snake():
 	snake_position_list.append(previous_tail_position)
 	print (snake_position_list.size())
+
 func eat_apple():
 	if snake_position_list[0] == apple_node.spawn_pos:
 		print("eat apple")
 		grow_snake()
+		apple_eaten.emit()

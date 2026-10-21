@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://jb0towhy5wtj" path="res://Scripts/BackgroundManager.gd" id="2_yx7mw"]
 [ext_resource type="Script" uid="uid://cbvyclyy6fsw6" path="res://Scripts/snake_manager.gd" id="3_ykeeq"]
 [ext_resource type="Script" uid="uid://b7mmrxjcd7i55" path="res://Scripts/apple_spawn_manager.gd" id="4_6bm6p"]
+[ext_resource type="Script" uid="uid://cwwj6do4bocy0" path="res://Scripts/score_manager.gd" id="5_dugkq"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yx7mw"]
 texture = ExtResource("1_1oj5k")
@@ -63,8 +64,73 @@ apple_node = NodePath("../Apple Spawn Manager")
 wait_time = 0.12
 autostart = true
 
-[node name="Apple Spawn Manager" type="Node" parent="." unique_id=2105677528 node_paths=PackedStringArray("apple_tilemap_layer")]
+[node name="Apple Spawn Manager" type="Node" parent="." unique_id=2105677528 node_paths=PackedStringArray("apple_tilemap_layer", "snake_script")]
 script = ExtResource("4_6bm6p")
 apple_tilemap_layer = NodePath("../Apple Draw Layer")
+snake_script = NodePath("../Snake Manager")
 
+[node name="Game Manager" type="Node" parent="." unique_id=1610005552]
+script = ExtResource("5_dugkq")
+
+[node name="Score Menu" type="Control" parent="." unique_id=625733559]
+visible = false
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Score Menu" unique_id=272739846]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 136.0
+offset_right = 176.00006
+offset_bottom = 176.0
+scale = Vector2(2.89, 5.27)
+pivot_offset_ratio = Vector2(0.5, 0.5)
+
+[node name="Score text" type="Label" parent="Score Menu" unique_id=147262210]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 116.0
+offset_top = 54.0
+offset_right = 159.0
+offset_bottom = 77.0
+grow_horizontal = 2
+text = "Score"
+
+[node name="score" type="Label" parent="Score Menu" unique_id=2089661076]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 116.0
+offset_top = 98.0
+offset_right = 159.0
+offset_bottom = 147.0
+grow_horizontal = 2
+text = "0
+"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Score Menu" unique_id=620347806]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 136.0
+offset_right = 182.0
+offset_bottom = 176.0
+text = "Retry"
+
+[connection signal="apple_eaten" from="Snake Manager" to="Apple Spawn Manager" method="_on_snake_manager_apple_eaten"]
+[connection signal="apple_eaten" from="Snake Manager" to="Game Manager" method="_on_snake_manager_apple_eaten"]
 [connection signal="timeout" from="Snake Manager/Timer" to="Snake Manager" method="_on_timer_timeout"]
+[connection signal="button_down" from="Score Menu/Button" to="Game Manager" method="_on_button_button_down"]
